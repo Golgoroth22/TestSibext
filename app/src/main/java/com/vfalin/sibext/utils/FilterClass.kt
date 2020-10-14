@@ -1,4 +1,4 @@
-package com.vfalin.sibext
+package com.vfalin.sibext.utils
 
 class FilterClass {
 

@@ -1,5 +1,6 @@
 package com.vfalin.sibext
 
+import com.vfalin.sibext.utils.FilterClass
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
