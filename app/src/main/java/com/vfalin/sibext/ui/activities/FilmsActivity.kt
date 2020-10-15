@@ -10,8 +10,7 @@ import com.vfalin.sibext.R
 import com.vfalin.sibext.network.LoggingInterceptor
 import com.vfalin.sibext.network.service.FilmsService
 import com.vfalin.sibext.presenters.FilmsActivityPresenter
-import com.vfalin.sibext.presenters.FilmsActivityPresenterImpl
-import com.vfalin.sibext.repositories.FilmsActivityRepositoryImpl
+import com.vfalin.sibext.repositories.FilmsActivityRepository
 import com.vfalin.sibext.ui.activities.adapters.FilmsAdapter
 import com.vfalin.sibext.utils.Constants
 import kotlinx.android.synthetic.main.activity_main.*
@@ -20,7 +19,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class FilmsActivity : AppCompatActivity(), FilmsActivityContract {
+class FilmsActivity : AppCompatActivity(), FilmsActivityContract.View {
     private lateinit var presenter: FilmsActivityPresenter
 
     private lateinit var filmsRecycler: RecyclerView
@@ -56,9 +55,9 @@ class FilmsActivity : AppCompatActivity(), FilmsActivityContract {
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        presenter = FilmsActivityPresenterImpl(
+        presenter = FilmsActivityPresenter(
             this,
-            FilmsActivityRepositoryImpl(retrofit.create(FilmsService::class.java))
+            FilmsActivityRepository(retrofit.create(FilmsService::class.java))
         )
     }
 
