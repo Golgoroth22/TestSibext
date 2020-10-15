@@ -8,20 +8,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.vfalin.sibext.R
 import com.vfalin.sibext.models.FilmsResponseUI
-import com.vfalin.sibext.network.LoggingInterceptor
-import com.vfalin.sibext.network.service.FilmsService
-import com.vfalin.sibext.presenters.FilmsActivityPresenter
-import com.vfalin.sibext.repositories.FilmsActivityRepository
 import com.vfalin.sibext.ui.activities.adapters.FilmsAdapter
-import com.vfalin.sibext.utils.Constants
 import kotlinx.android.synthetic.main.activity_main.*
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
+import org.koin.android.scope.currentScope
 
 class FilmsActivity : AppCompatActivity(), FilmsActivityContract.View {
-    private lateinit var presenter: FilmsActivityContract.Presenter
+    override val presenter: FilmsActivityContract.Presenter by currentScope.inject()
 
     private lateinit var filmsRecycler: RecyclerView
     private lateinit var filmsAdapter: FilmsAdapter
@@ -30,7 +22,7 @@ class FilmsActivity : AppCompatActivity(), FilmsActivityContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        initPresenter()
+        presenter.onAttach(this)
         initViews()
     }
 
@@ -47,24 +39,6 @@ class FilmsActivity : AppCompatActivity(), FilmsActivityContract.View {
             adapter = filmsAdapter
         }
         startLoadFilms()
-    }
-
-    private fun initPresenter() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl(Constants.FILMS_BASE_URL)
-            .client(
-                OkHttpClient()
-                    .newBuilder()
-                    .addNetworkInterceptor(LoggingInterceptor())
-                    .build()
-            )
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        presenter = FilmsActivityPresenter(
-            this,
-            FilmsActivityRepository(retrofit.create(FilmsService::class.java))
-        )
     }
 
     private fun startLoadFilms() {

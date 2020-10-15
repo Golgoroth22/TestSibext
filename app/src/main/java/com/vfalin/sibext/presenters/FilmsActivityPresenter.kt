@@ -6,10 +6,9 @@ import com.vfalin.sibext.ui.activities.FilmsActivityContract
 import timber.log.Timber
 
 class FilmsActivityPresenter(
-    private var view: FilmsActivityContract.View?,
     private val repository: FilmsActivityContract.Model
 ) : FilmsActivityContract.Presenter {
-
+    private var mView: FilmsActivityContract.View? = null
     private var filmsResponse = FilmsResponseUI()
 
     override fun loadFilms() {
@@ -19,19 +18,23 @@ class FilmsActivityPresenter(
             { error -> receiveErrorResponse(error) })
     }
 
+    override fun onAttach(view: FilmsActivityContract.View) {
+        mView = view
+    }
+
     override fun onDestroy() {
-        view = null
+        mView = null
     }
 
     private fun receiveSuccessfulResponse(response: FilmsResponse) {
         filmsResponse = FilmsResponseUI(response.films.map { it.convertTo() })
-        view?.updateFilms(filmsResponse)
+        mView?.updateFilms(filmsResponse)
         Timber.i("FilmsActivityPresenterImpl receiveSuccessfulResponse $response")
     }
 
     private fun receiveErrorResponse(t: Throwable) {
         filmsResponse = FilmsResponseUI(error = t)
-        view?.updateFilms(filmsResponse)
+        mView?.updateFilms(filmsResponse)
         Timber.e("FilmsActivityPresenterImpl receiveFailureResponse ${t.localizedMessage}")
     }
 }
