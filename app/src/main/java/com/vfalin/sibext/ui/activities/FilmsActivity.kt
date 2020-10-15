@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.vfalin.sibext.R
+import com.vfalin.sibext.models.FilmsResponseUI
 import com.vfalin.sibext.network.LoggingInterceptor
 import com.vfalin.sibext.network.service.FilmsService
 import com.vfalin.sibext.presenters.FilmsActivityPresenter
@@ -31,6 +32,11 @@ class FilmsActivity : AppCompatActivity(), FilmsActivityContract.View {
         setContentView(R.layout.activity_main)
         initPresenter()
         initViews()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDestroy()
     }
 
     private fun initViews() {
@@ -66,8 +72,7 @@ class FilmsActivity : AppCompatActivity(), FilmsActivityContract.View {
         activity_films_progress.visibility = View.VISIBLE
     }
 
-    override fun updateFilms() {
-        val films = presenter.getFilms()
+    override fun updateFilms(films: FilmsResponseUI) {
         if (films.films != null) {
             filmsAdapter.updateList(films.films)
         }

@@ -6,13 +6,11 @@ import com.vfalin.sibext.network.pojo.FilmsResponse
 interface FilmsActivityContract {
 
     interface View {
-        fun updateFilms()
+        fun updateFilms(films: FilmsResponseUI)
     }
 
     interface Presenter {
         fun loadFilms()
-
-        fun getFilms(): FilmsResponseUI
 
         fun onDestroy()
     }
