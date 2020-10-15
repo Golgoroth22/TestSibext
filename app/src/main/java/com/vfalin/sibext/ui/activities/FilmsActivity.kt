@@ -20,7 +20,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 class FilmsActivity : AppCompatActivity(), FilmsActivityContract.View {
-    private lateinit var presenter: FilmsActivityPresenter
+    private lateinit var presenter: FilmsActivityContract.Presenter
 
     private lateinit var filmsRecycler: RecyclerView
     private lateinit var filmsAdapter: FilmsAdapter
