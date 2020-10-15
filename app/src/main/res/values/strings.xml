@@ -1,3 +1,7 @@
 <resources>
+    <!-- App -->
     <string name="app_name">Sibext</string>
+
+    <!-- Activity Films -->
+    <string name="activity_films_load_button">Загрузить</string>
 </resources>

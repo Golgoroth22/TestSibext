@@ -12,6 +12,7 @@ import com.vfalin.sibext.models.FilmUI
 
 class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
     private var adapterList = emptyList<FilmUI>()
+    private var sortedList = emptyList<FilmUI>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilmViewHolder {
         return FilmViewHolder(
@@ -21,13 +22,19 @@ class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: FilmViewHolder, position: Int) {
-        holder.bind(adapterList[position])
+        holder.bind(sortedList[position])
     }
 
-    override fun getItemCount() = adapterList.size
+    override fun getItemCount() = sortedList.size
 
     fun updateList(films: List<FilmUI>) {
         adapterList = films
+        sortedList = films
+        notifyDataSetChanged()
+    }
+
+    fun sort(genre: String) {
+        sortedList = adapterList.filter { it.genres.contains(genre) }
         notifyDataSetChanged()
     }
 
@@ -40,7 +47,7 @@ class FilmsAdapter : RecyclerView.Adapter<FilmsAdapter.FilmViewHolder>() {
             Glide.with(image.context)
                 .load(film.imageUrl)
                 .thumbnail(0.3f)
-                .error(R.drawable.film_no_image)
+                .error(R.drawable.no_image_available)
                 .into(image)
         }
     }

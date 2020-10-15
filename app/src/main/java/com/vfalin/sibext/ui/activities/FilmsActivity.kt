@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.vfalin.sibext.R
 import com.vfalin.sibext.models.FilmsResponseUI
 import com.vfalin.sibext.ui.activities.adapters.FilmsAdapter
+import com.vfalin.sibext.ui.activities.adapters.GenresAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.scope.currentScope
 
@@ -19,11 +20,16 @@ class FilmsActivity : AppCompatActivity(), FilmsActivityContract.View {
     private lateinit var filmsAdapter: FilmsAdapter
     private lateinit var filmsLayoutManager: GridLayoutManager
 
+    private lateinit var genresRecycler: RecyclerView
+    private lateinit var genresAdapter: GenresAdapter
+    private lateinit var genresLayoutManager: GridLayoutManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter.onAttach(this)
         initViews()
+        initListeners()
     }
 
     override fun onDestroy() {
@@ -38,7 +44,19 @@ class FilmsActivity : AppCompatActivity(), FilmsActivityContract.View {
             layoutManager = filmsLayoutManager
             adapter = filmsAdapter
         }
-        startLoadFilms()
+        genresLayoutManager = GridLayoutManager(this, 2, GridLayoutManager.HORIZONTAL, false)
+        genresAdapter = GenresAdapter { genre -> sortFilms(genre) }
+        genresRecycler = findViewById<RecyclerView>(R.id.activity_films_genres_recycler).apply {
+            layoutManager = genresLayoutManager
+            adapter = genresAdapter
+        }
+    }
+
+    private fun initListeners() {
+        activity_films_load_button.setOnClickListener {
+            it.visibility = View.GONE
+            startLoadFilms()
+        }
     }
 
     private fun startLoadFilms() {
@@ -46,9 +64,17 @@ class FilmsActivity : AppCompatActivity(), FilmsActivityContract.View {
         activity_films_progress.visibility = View.VISIBLE
     }
 
+    private fun sortFilms(genre: String) {
+        filmsAdapter.sort(genre)
+    }
+
     override fun updateFilms(films: FilmsResponseUI) {
         if (films.films != null) {
             filmsAdapter.updateList(films.films)
+            genresAdapter.updateList(films.films)
+            if (films.films.isEmpty()) {
+                activity_films_load_button.visibility = View.VISIBLE
+            }
         }
         if (films.error != null) {
             Snackbar.make(
