@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 30
@@ -42,6 +43,10 @@ dependencies {
     /* Koin */
     implementation 'org.koin:koin-android:2.1.6'
     implementation 'org.koin:koin-android-scope:2.1.6'
+    
+    /* Moxy */
+    implementation 'com.github.moxy-community:moxy:2.2.0'
+    kapt 'com.github.moxy-community:moxy-compiler:2.2.0'
 
     /* Network */
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
