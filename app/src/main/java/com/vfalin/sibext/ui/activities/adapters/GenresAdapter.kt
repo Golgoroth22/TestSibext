@@ -23,7 +23,7 @@ class GenresAdapter(
     }
 
     override fun onBindViewHolder(holder: GenreViewHolder, position: Int) {
-        holder.bind(adapterList[position])
+        holder.bind(adapterList[position], genreSelectorListener)
     }
 
     override fun getItemCount() = adapterList.size
@@ -37,17 +37,17 @@ class GenresAdapter(
         notifyDataSetChanged()
     }
 
-    fun selectItem(genre: GenreUI) {
+    fun selectGenre(genre: String) {
         adapterList.map {
-            it.isSelected = it.genre == genre.genre
+            it.isSelected = it.genre == genre
         }
         notifyDataSetChanged()
     }
 
-    inner class GenreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class GenreViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val button: Button = itemView.findViewById(R.id.item_genre_button)
 
-        fun bind(genre: GenreUI) {
+        fun bind(genre: GenreUI, genreSelectorListener: (String) -> Unit) {
             button.text = genre.genre
             if (genre.isSelected) {
                 button.backgroundTintList =
@@ -57,7 +57,6 @@ class GenresAdapter(
                     ContextCompat.getColorStateList(button.context, R.color.colorPrimary)
             }
             button.setOnClickListener {
-                selectItem(genre)
                 genreSelectorListener.invoke(genre.genre)
             }
         }
