@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Text"/>
+
+    <style name="Text.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Regular" />
+
+    <style name="Text.Regular.Black">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Text.Regular.Black.12">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Text.Bold.White">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="Text.Bold.White.16">
+        <item name="android:textSize">16sp</item>
+    </style>
+</resources>
