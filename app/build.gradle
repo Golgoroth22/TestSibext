@@ -71,7 +71,7 @@ dependencies {
     /* Tests */
     testImplementation 'io.mockk:mockk:1.10.2'
     testImplementation 'org.koin:koin-test:2.1.6'
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
